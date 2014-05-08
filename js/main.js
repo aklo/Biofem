@@ -83,26 +83,24 @@ $(document).on('pageinit','#dashboard-page', function(){
 //Init Data
 $(document).on('pageinit','#data-page', function(){
 	$.ajax({
-		url: 'https:api.knackhq.com/v1/objects/object_1/records'
-	  , type: 'GET'
-	  , headers: {
-			'X-Knack-Application-Id': '536a5467d0d46fbc0c647e7e'
-		  , 'X-Knack-REST-API-Key': '704052c0-d5fe-11e3-8de1-5377a2620470'
-		}
-	  , success: function(data) {
-			
+		url: 'https:api.knackhq.com/v1/scenes/scene_1/views/view_1/records', 
+		type: 'GET', 
+		headers: {
+			'X-Knack-Application-Id': '536a5467d0d46fbc0c647e7e', 
+			'X-Knack-REST-API-Key': '704052c0-d5fe-11e3-8de1-5377a2620470'
+		}, 
+		success: function(data) {
 			var arr = [];
 			for(x in data.records){
+				var btn = "<a class='fa fa-fw fa-pencil-square-o' href='edit-data.html?id="+data.records[x].id+"'></a>"
+						+ "<a class='delete fa fa-fw fa-trash-o' href='#' data-id='"+data.records[x].id+"'></a>";
 
-				arr.push(
-					{
-						Name : data.records[x].field_1,
-						Address : data.records[x].field_14,
-						Email : data.records[x].field_15,
-						Status : "<a href='edit-data.html?"+data.records[x].id+"'>Edit</a>"
-					}
-				);
-				
+				arr.push({
+					Name : data.records[x].field_1,
+					Address : data.records[x].field_14,
+					Email : data.records[x].field_15,
+					Status : btn
+				});
 			}
 			console.log(arr);
 			$('#records').DataTable({
@@ -114,26 +112,151 @@ $(document).on('pageinit','#data-page', function(){
 					{ "data": "Status" }
 				]
 			});
-		}
+		},
+		complete: function(data){
+			$('.delete').click(function(){
+				var id = $('.delete').attr('data-id');
+				return false;
+			});
+		},
 	}); 
 });
 
+function delete1(){
+
+
+}
+
+
 //Init Edit Data
 $(document).on('pageinit','#edit-data-page', function(){
+	var id = getUrlVars()['id'];
+	
     $.ajax({
-            url: 'https://api.knackhq.com/v1/records/536a551ebbf650762a8f921d/?format=both&callback=jQuery172017395361280068755_1399493777406&_=1399494483382'
-          , type: 'GET'
-          , headers: {
-                'X-Knack-Application-Id': '536a5467d0d46fbc0c647e7e'
-              , 'X-Knack-REST-API-Key': '704052c0-d5fe-11e3-8de1-5377a2620470'
-            }
-          , success: function(data) {
-                
-                console.log(data);
-                
-            }
-    });  
+        url: 'https://api.knackhq.com/v1/scenes/scene_5/views/view_5/records/'+id, 
+		type: 'GET', 
+		headers: {
+            'X-Knack-Application-Id': '536a5467d0d46fbc0c647e7e', 
+			'X-Knack-REST-API-Key': '704052c0-d5fe-11e3-8de1-5377a2620470'
+        }, 
+		success: function(data) {
+			$('#inputName').val(data.field_1);
+			$('#inputAddress').val(data.field_14);
+			$('#inputEmail').val(removeHtmlTag(data.field_15));
+		}
+    });
+	
+	var form = $('#frmEdit');
+    
+    $(form).validate({
+        submitHandler: function( form ) {
+			$.ajax({
+				url: 'https://api.knackhq.com/v1/scenes/scene_5/views/view_5/records/'+id+'/?format=both',
+				type: 'PUT',
+				data: {
+					"field_1":$('#inputName').val(),
+					"field_14":$('#inputAddress').val(),
+					"field_15":$('#inputEmail').val()
+				},
+				headers: {
+					'X-Knack-Application-Id': '536a5467d0d46fbc0c647e7e', 
+					'X-Knack-REST-API-Key': '704052c0-d5fe-11e3-8de1-5377a2620470'
+				},
+				success: function(data) {
+					$('.message').html(notify('has-success' , 'fa-check', 'Update successful.'));
+				},
+				error: function(data){
+					var array = JSON.parse(data.responseText);
+					$('.message').html(notify('has-error' , 'fa-warning',array.errors[0].message));
+				}
+			}); 
+        }
+    });
 });
+
+$(document).on('pageshow','#test-page', function(){
+	
+	var id = '536a5522bbf650762a8f9225';
+	
+    $.ajax({
+		url: 'https://api.knackhq.com/v1/scenes/scene_5/views/view_5/records/'+id, 
+		type: 'GET', 
+		headers: {
+			'X-Knack-Application-Id': '536a5467d0d46fbc0c647e7e', 
+			'X-Knack-REST-API-Key': '704052c0-d5fe-11e3-8de1-5377a2620470'
+		}, 
+		success: function(data) {
+			$('#inputName').val(data.field_1);
+			$('#inputAddress').val(data.field_14);
+			$('#inputEmail').val(removeHtmlTag(data.field_15)); 
+		}
+    });
+
+	var form = $('#frmEdit');
+    
+    $(form).validate({
+        submitHandler: function( form ) {
+			$.ajax({
+					url: 'https://api.knackhq.com/v1/scenes/scene_5/views/view_5/records/'+id+'/?format=both',
+					type: 'PUT',
+					data: {
+                        "field_1":$('#inputName').val(),
+                        "field_14":$('#inputAddress').val(),
+                        "field_15":$('#inputEmail').val()
+					},
+					headers: {
+						'X-Knack-Application-Id': '536a5467d0d46fbc0c647e7e', 
+						'X-Knack-REST-API-Key': '704052c0-d5fe-11e3-8de1-5377a2620470'
+					},
+					success: function(data) {
+						$('.message').html(notify('has-success' , 'fa-check', 'Update successful.'));
+					},
+					error: function(data){
+						var array = JSON.parse(data.responseText);
+						$('.message').html(notify('has-error' , 'fa-warning',array.errors[0].message));
+					}
+			}); 
+        }
+    });
+	
+});
+//Strip Html Tags
+function removeHtmlTag(string){
+	return string.replace(/<(?:.|\n)*?>/gm, '');
+}
+
+
+//Get URL data
+function getUrlVars(link) {
+    
+    if (typeof(link) == 'undefined') {
+        var url = window.location.href;
+        var vars = {};
+        var parts = url.replace(/[?&]+([^=&]+)=([^&]*)/gi, function(m,key,value) {
+            vars[key] = value;
+        });
+    }else{
+        var url = link;
+        var vars = {};
+        var parts = url.replace(/[?&]+([^=&]+)=([^&]*)/gi, function(m,key,value) {
+            vars[key] = value;
+        });
+    }
+    
+    return vars;
+}
+
+
+//Notification Message Helper
+function notify(className, iconName, message){
+
+	var html = '<div class="form-group '+className+'">'
+			 + '<label class="control-label">'
+			 + '<i class="fa '+iconName+'"></i> '+message+'</label>'
+			 + '</div>';
+	
+	return html;
+}
 
 function handleLogin() {
     var form = $("#frmLogin");  
@@ -185,6 +308,114 @@ function handleLogin() {
 $(function() {
 	$('#login').click(function(){
 		handleLogin();
+		return false;
+	});
+});
+
+$(document).on('pageinit','#forgot-password-page', function(){
+	//https://api.knackhq.com/v1/user/536aa3bad0d46fbc0c9406f2/confirm/139949765885172z0006enrk9?callback=jQuery17201799338988494128_1399573843890&_=1399573898720
+	//http://biofem.knackhq.com/biofem#member//knack-password/reset/139949765885172z0006enrk9/536aa3bad0d46fbc0c9406f2
+	
+	//https://api.knackhq.com/v1/user/536aa3bad0d46fbc0c9406f2/139949765885172z0006enrk9/password/reset?callback=jQuery17201799338988494128_1399573843891
+	//post
+	//password: "123qweasdzxc"
+	//password_confirmation: "123qweasdzxc"
+	//url: "http://biofem.knackhq.com/biofem#member/"
+	$('#send-password').click(function(){
+		var email = $('#forgot-email').val();
+		if (email.length > 0) {
+			SendByMail(email);
+			/*
+			$.ajax({
+				url: 'https://api.knackhq.com/v1/users/password', 
+				type: 'POST', 
+				data: {
+					email: {email:email},
+					url: "http://biofem.knackhq.com/biofem#member/",
+				},
+				headers: {
+					'X-Knack-Application-Id': '536a5467d0d46fbc0c647e7e', 
+					'X-Knack-REST-API-Key': '704052c0-d5fe-11e3-8de1-5377a2620470'
+				}, 
+				success: function(data) {
+					//
+				},
+				error: function(data){
+					console.log(data.responseJSON.errors[0].message);
+				},
+				complete: function(data){
+					//console.log(data);
+				},
+			});	
+			*/
+		}
+		return false;
+	});
+});
+
+function SendByMail(email) {
+	/*
+	$.ajax({
+		url: 'https://api:key-6zqh55-oohypp15yq-z0qzvbvymy5py3@api.mailgun.net/v2/sandbox6b89e56b323f40cc8ed6f50779a57064.mailgun.org/messages', 
+		type: 'POST', 
+		crossDomain: true,
+		dataType: 'json',
+		data: {
+			"from": "Mailgun Sandbox <postmaster@sandbox6b89e56b323f40cc8ed6f50779a57064.mailgun.org>",
+            "to": "Allan Lopez <allankarl@molavenet.com>",
+            "subject": "Hello Allan Lopez",
+            "text": "Congratulations Allan Lopez, you just sent an email with Mailgun!  You are truly awesome!  You can see a record of this email in your logs: https://mailgun.com/cp/log .  You can send up to 300 emails/day from this sandbox server.  Next, you should add your own domain so you can send 10,000 emails/month for free."
+		},
+		success: function(data) {
+		},
+		error: function(data){
+		},
+		complete: function(data){
+			console.log(data);
+		},
+	});
+	
+	var options = {
+		recipients: "allankarl@molavenet.com",
+		subject: "Subject Line",
+		from: "sender@example.org",
+		content: {
+			'text/html': '<strong>Sample bold content.</strong>',
+			'text/plain': 'Plain text goes here'
+		}
+	}
+	postageapp.sendMessage(options, function callback(data) {
+		console.log(data);
+	});
+	*/
+}
+$(document).on('pageinit','#reset-password-page', function(){
+	$('#send-password').click(function(){
+		var password = $('#reset-password-input').val();
+		var password2 = $('#reset-password2-input').val();
+		if (email.length > 0) {
+			$.ajax({
+				url: 'https://api.knackhq.com/v1/users/password', 
+				type: 'POST', 
+				data: {
+					email: {email:email},
+					url: "http://biofem.knackhq.com/biofem#member/",
+				},
+				headers: {
+					'X-Knack-Application-Id': '536a5467d0d46fbc0c647e7e', 
+					'X-Knack-REST-API-Key': '704052c0-d5fe-11e3-8de1-5377a2620470'
+				}, 
+				success: function(data) {
+					//
+				},
+				error: function(data){
+					console.log(data.responseJSON.errors[0].message);
+				},
+				complete: function(data){
+					//console.log(data);
+				},
+			});	
+		}
 		return false;
 	});
 });

@@ -4,7 +4,7 @@
 	<meta charset="UTF-8">
 	<title>Biofem | Data Storage</title> 
 	<meta name="format-detection" content="telephone=no" />
-	<meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width, height=device-height, target-densitydpi=device-dpi" />
+	<meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width, height=device-height" />
 	
 	<link href="jquery-mobile/jquery.mobile.custom.theme.css" rel="stylesheet" type="text/css" />
 	<link href="jquery-mobile/jquery.mobile.custom.structure.css" rel="stylesheet" type="text/css" />
@@ -16,7 +16,7 @@
 	<!-- Ionicons -->
 	<link href="css/ionicons.min.css" rel="stylesheet" type="text/css" />
 	<!-- Morris chart -->
-	<link href="css/morris/morris.css" rel="stylesheet" type="text/css" />
+	<!--<link href="css/morris/morris.css" rel="stylesheet" type="text/css" />-->
 	<!-- jvectormap -->
 	<link href="css/jvectormap/jquery-jvectormap-1.2.2.css" rel="stylesheet" type="text/css" />
 	<!-- fullCalendar -->
@@ -37,6 +37,10 @@
 	  <script src="js/html5shiv.js"></script>
 	  <script src="js/respond.min.js"></script>
 	<![endif]-->
+	
+	
+	<script>app_id="536a5467d0d46fbc0c647e7e";distribution_key="dist_2";</script>
+	<script src="https://api.knackhq.com/536a5467d0d46fbc0c647e7e/dist_2/knack.js"></script>
 </head>
 <body class="skin-blue">
 	<!-- header logo: style can be found in header.less -->
@@ -329,10 +333,11 @@
 					</li>
 					
 					<li class="active">
-						<a href="edit-data.html">
-							<i class="fa fa-table"></i> <span>Edit Data</span>
+						<a href="test-page.html">
+							<i class="fa fa-table"></i> <span>Test Page</span>
 						</a>
 					</li>
+
 				</ul>
 			</section>
 			<!-- /.sidebar -->
@@ -864,8 +869,8 @@
 	<!-- Bootstrap -->
 	<script src="js/bootstrap.min.js" type="text/javascript"></script>
 	<!-- Morris.js charts -->
-	<script src="js/raphael-min.js"></script>
-	<script src="js/plugins/morris/morris.min.js" type="text/javascript"></script>
+	<!--<script src="//cdnjs.cloudflare.com/ajax/libs/raphael/2.1.0/raphael-min.js"></script>
+	<script src="js/plugins/morris/morris.min.js" type="text/javascript"></script>-->
 	<!-- Sparkline -->
 	<script src="js/plugins/sparkline/jquery.sparkline.min.js" type="text/javascript"></script>
 	<!-- jvectormap -->
@@ -883,19 +888,19 @@
 	<script src="js/plugins/iCheck/icheck.min.js" type="text/javascript"></script>
 
 	<!-- AdminLTE App -->
-	<script src="js/AdminLTE/app.js" type="text/javascript"></script>
+	<!--<script src="js/AdminLTE/app.js" type="text/javascript"></script>-->    
 	
 	<!-- AdminLTE dashboard demo (This is only for demo purposes) -->
-	<script src="js/AdminLTE/dashboard.js" type="text/javascript"></script>     
+	<!--<script src="js/AdminLTE/dashboard.js" type="text/javascript"></script>-->     
 	
 	<!-- AdminLTE for demo purposes -->
 	<script src="js/AdminLTE/demo.js" type="text/javascript"></script>
 	
-	<!-- DATA TABES SCRIPT -->
-	<script src="js/jquery.dataTables.min.js" type="text/javascript"></script>
+	<script src="js/plugins/datatables/jquery.dataTables.js" type="text/javascript"></script>
 	<script src="js/plugins/datatables/dataTables.bootstrap.js" type="text/javascript"></script>
-
+	
 	<script src="jquery-mobile/jquery.mobile.custom.min.js"></script>
+	<script src="js/jquery.validate.min.js" type="text/javascript"></script>
 	<script src="js/main.js"></script>
 	
 	<script type="text/javascript">

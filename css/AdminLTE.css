@@ -3414,3 +3414,7 @@ fieldset[disabled] .btn-vk.active {
 .login_results {
 	display: none;
 }
+
+.bg-black .ui-page{
+	background: #222 !important;
+}
